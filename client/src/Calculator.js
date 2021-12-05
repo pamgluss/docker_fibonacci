@@ -78,7 +78,6 @@ class FibCalculator extends Component {
 
                 <p>Previously Calculated Values</p>
                 {this.renderValues()}
-
             </div>
         )
     };

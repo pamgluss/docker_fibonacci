@@ -1,0 +1,30 @@
+language: generic
+
+sudo: required
+
+services:
+  - docker
+
+# Run tests in /client/ directory using dev Dockerfile
+before_install:
+  - docker build -t pgluss/test-client -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true pgluss/test-client npm run test -- --coverage
+
+# Build each image with production Dockerfiles
+after_success:
+  - docker build -t pgluss/multi-client ./client
+  - docker build -t pgluss/multi-nginx ./nginx
+  - docker build -t pgluss/multi-server ./server
+  - docker build -t pgluss/multi-worker ./worker
+
+  # Push production images to Docker hub
+  ## Login to Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  ## Push images now that we're logged in
+  - docker push pgluss/multi-client
+  - docker push pgluss/multi-nginx
+  - docker push pgluss/multi-server
+  - docker push pgluss/multi-worker

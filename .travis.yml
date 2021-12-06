@@ -21,10 +21,10 @@ after_success:
 
   # Push production images to Docker hub
   ## Login to Docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin docker.io
 
   ## Push images now that we're logged in
-  - docker push pgluss/multi-client:latest
-  - docker push pgluss/multi-nginx:latest
-  - docker push pgluss/multi-server:latest
-  - docker push pgluss/multi-worker:latest
+  - docker push pgluss/multi-client
+  - docker push pgluss/multi-nginx
+  - docker push pgluss/multi-server
+  - docker push pgluss/multi-worker

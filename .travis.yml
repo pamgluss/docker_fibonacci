@@ -14,17 +14,17 @@ script:
 
 # Build each image with production Dockerfiles
 after_success:
-  - docker build -t pgluss/multi-client ./client
-  - docker build -t pgluss/multi-nginx ./nginx
-  - docker build -t pgluss/multi-server ./server
-  - docker build -t pgluss/multi-worker ./worker
+  - docker build -t "$DOCKER_ID"/multi-client ./client
+  - docker build -t "$DOCKER_ID"/multi-nginx ./nginx
+  - docker build -t "$DOCKER_ID"/multi-server ./server
+  - docker build -t "$DOCKER_ID"/multi-worker ./worker
 
   # Push production images to Docker hub
   ## Login to Docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin docker.io
 
   ## Push images now that we're logged in
-  - docker push pgluss/multi-client
-  - docker push pgluss/multi-nginx
-  - docker push pgluss/multi-server
-  - docker push pgluss/multi-worker
+  - docker push "$DOCKER_ID"/multi-client
+  - docker push "$DOCKER_ID"/multi-nginx
+  - docker push "$DOCKER_ID"/multi-server
+  - docker push "$DOCKER_ID"/multi-worker

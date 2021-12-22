@@ -16,3 +16,7 @@ TBD
 
 ## Contributing
 TBD
+
+## Notes
+
+_Dockerrun.aws.json_ is an outdated method for building multiple containers on Elastic Beanstalk. Now, `Amazon Linux 2` platform will accept a docker-compose.yml file. I am including it for the exercise, but it would only be relevant until July 2022.

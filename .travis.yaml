@@ -1,0 +1,35 @@
+language: generic
+
+sudo: required
+
+services:
+  - docker
+
+# Run tests in /client/ directory using dev Dockerfile
+before_install:
+  - docker build -t pgluss/test-client -f ./client/Dockerfile.dev ./client
+  - openssl aes-256-cbc -K $encrypted_9f3b5599b056_key -iv $encrypted_9f3b5599b056_iv -in service-account.json.enc -out service-account.json -d
+  - curl https://sdk.cloud.google.com | bash > /dev/null
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud components update kubectl
+  - gcloud auth activate-service-account --key-file service-account.json
+
+script:
+  - docker run -e CI=true pgluss/test-client npm run test -- --coverage
+
+# Build each image with production Dockerfiles
+after_success:
+  - docker build -t "$DOCKER_ID"/multi-client ./client
+  - docker build -t "$DOCKER_ID"/multi-nginx ./nginx
+  - docker build -t "$DOCKER_ID"/multi-server ./server
+  - docker build -t "$DOCKER_ID"/multi-worker ./worker
+
+  # Push production images to Docker hub
+  ## Login to Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin docker.io
+
+  ## Push images now that we're logged in
+  - docker push "$DOCKER_ID"/multi-client
+  - docker push "$DOCKER_ID"/multi-nginx
+  - docker push "$DOCKER_ID"/multi-server
+  - docker push "$DOCKER_ID"/multi-worker

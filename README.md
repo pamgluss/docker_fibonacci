@@ -1,18 +1,15 @@
 # Dockerized Fibonacci Calculator
-Code for Docker &amp; Kubernetes course
+Code for a project to practice writing a frontend and APIs in a few different frameworks. 
 
 ## Overview
-This is a very simple application that illustrates how to set up a multi container project that has automated deployment through Travis CI to AWS Elastic Beanstalk. 
 
-## Dependencies
-Requires Docker installed locally.
 
 ## Running Locally
-
-`docker-compose up --build`
+* Run `docker-compose up` or `docker-compose up --build`
+* View the site at http://localhost:3050/
 
 ## Testing
-TBD
+
 
 ## Contributing
 TBD
